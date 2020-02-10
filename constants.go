@@ -1,4 +1,4 @@
-package main
+package gorocrate
 
 const ROCRateMetadataFileName = "ro-crate-metadata.jsonld"
 const ROCrateSpecificationVersionURI = "https://w3id.org/ro/crate/1.0"

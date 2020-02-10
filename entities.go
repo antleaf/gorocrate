@@ -1,4 +1,4 @@
-package main
+package gorocrate
 
 type entity struct {
 	Properties map[string]interface{}

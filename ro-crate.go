@@ -1,4 +1,4 @@
-package main
+package gorocrate
 
 import (
 	"encoding/json"
