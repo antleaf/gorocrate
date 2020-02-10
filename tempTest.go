@@ -5,37 +5,32 @@ import (
 	"os"
 )
 
-const InputSampleROCratePath = "/Users/paulwalk/Dropbox/Reference/_ou/NIMS/NIMS RO-Crate/ro-crate-example2"
-const OutputSampleROCratePath = "/Users/paulwalk/_temp/ro-crate-sample"
-const ROCrateSpecificationPermalingPrefix = "https://w3id.org/ro/crate/"
-const ROCRateMetadataFileName = "ro-crate-metadata.jsonld"
-const ROCrateSpecificationVersionURI = "https://w3id.org/ro/crate/1.0"
+func readAndWriteExistingROCRate(inputSampleROCratePath,outputSampleROCratePath string) {
+	err := os.MkdirAll(outputSampleROCratePath, os.ModePerm)
+	roCrate := NewROCrate(inputSampleROCratePath)
+	err = roCrate.Unmarshall()
+	if err != nil {
+		fmt.Println("error:", err)
+	}
+	//roCrate.GetRootDataEntity().SetProperty("datePublished","1968-04-27")
+	roCrate.RootFolderPath = outputSampleROCratePath
+	err = roCrate.Marshall()
+	if err != nil {
+		fmt.Println("error:", err)
+	}
+}
+
+func createROCrateForExistingFolder(rOCrateRootPath string) {
+	roCrate := NewROCrate(rOCrateRootPath)
+	roCrate.PopulateROCrateFromFilesystem()
+	err := roCrate.Marshall()
+	if err != nil {
+		fmt.Println("error:", err)
+	}
+}
 
 
 func main() {
-	err := os.MkdirAll(OutputSampleROCratePath, os.ModePerm)
-	roCrate := NewROCrate()
-	//roCrate.AddEntity(NewRootDataEntity(
-	//	"My New ROCrate",
-	//	"Description of My New ROCrate",
-	//	"",
-	//	"my new license",
-	//))
-
-	err = roCrate.Unmarshall(InputSampleROCratePath)
-	if err != nil {
-		fmt.Println("error:", err)
-	}
-
-	err = roCrate.Marshall(OutputSampleROCratePath)
-	if err != nil {
-		fmt.Println("error:", err)
-	}
-	rootDataEntity := roCrate.GetRootDataEntity()
-	fmt.Printf("RootDataEntityID = %s",rootDataEntity.GetID())
-	fmt.Println()
-	//for _,v := range roCrate.Graph {
-	//	fmt.Printf("Graph entity = %v",v["@id"])
-	//	fmt.Println()
-	//}
+	//readAndWriteExistingROCRate("/Users/paulwalk/Dropbox/Reference/_ou/NIMS/NIMS RO-Crate/third-party-example-ro-crates/ro-crate-example2","/Users/paulwalk/_temp/ro-crate-sample")
+	createROCrateForExistingFolder("/Users/paulwalk/Dropbox/Reference/_ou/NIMS/NIMS RO-Crate/nims_data/sample-mdr-x-data")
 }
